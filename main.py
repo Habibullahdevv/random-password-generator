@@ -26,4 +26,4 @@ use_special = st.checkbox("Include special characters in the password");
 
 if st.button("Generate Password"):
     password = password_generator(length, use_string, use_special);
-    st.write(f"Your password is: {password}");
+    st.success(f"Your password is: {password}");
