@@ -1,10 +1,13 @@
 import streamlit as st;
 import random;
 import string;
-
+import re;
 
 
 def password_generator(length, use_digit, use_special):
+
+    
+
     characters = string.ascii_letters;
 
     if use_digit:
@@ -26,4 +29,36 @@ use_special = st.checkbox("Include special characters in the password");
 
 if st.button("Generate Password"):
     password = password_generator(length, use_string, use_special);
-    st.success(f"Your password is: {password}");
+    strength_password = st.success(f"Your password is: {password}");
+
+    score : int = 0;
+
+    if length >= 8:
+        score += 1;        
+    else:
+        st.warning("❌ Password must be 8 characters long or more.");
+    
+    if re.search(r"\d", password):
+        score += 1;
+    else:
+        st.warning("❌ Too Week password, must contain at least one number.");
+  
+    if re.search(r"[A-Z]", password) and re.search(r"[a-z]", password):
+        score += 1;
+    else:
+        st.warning("❌ Too Week password, must contain both uppercase and lowercase letters.");
+
+    if re.search(r"[!@#$%^&*()_+=><;:.,?/|]", password):
+        score += 1;
+    else:
+        st.warning("❌ Too Week password, must contain at least one special character.");
+
+
+    if score == 4:
+        st.success("💪 Strong password.");
+
+    elif score == 3:
+        print("⚠️ Moderate Password - Consider adding more security features.")
+    else:
+        print("❌ Weak Password - Improve it using the suggestions above.")
+
